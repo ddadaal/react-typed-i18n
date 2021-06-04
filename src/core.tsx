@@ -15,12 +15,13 @@ export interface I18n<D extends Def> {
   getLanguage: (name: string) => Promise<Language<D> | undefined>;
   Provider: React.FC;
 
-  r<TRoot extends Lang<D>>(root: TRoot): TRoot;
-  r<TPartial extends PartialLang<D>,
+  i<TRoot extends Lang<D>>(root: TRoot): TRoot;
+  i<TPartial extends PartialLang<D>,
   TRest extends RestLang<D, Lang<D>, TPartial>>
   (root: TPartial, rest: TRest): `${TPartial}${TRest}`;
 
-  p<TPartial extends PartialLang<D>>(t: TPartial): TPartial;
+  p: <TPartial extends PartialLang<D>, TRest extends RestLang<D, Lang<D>, TPartial>>
+  (t: TPartial) => (rest: TRest) => `${TPartial}${TRest}`
 
   useI18n: () => ProviderValue<D>;
 }
@@ -31,6 +32,9 @@ export function useI18nContext() {
 
   return i18n;
 }
+
+const i: I18n<any>["i"] = (root, rest = "") => (root + rest) as any;
+const p: I18n<any>["p"] = (t) => (s) => (t+s) as any;
 
 export const I18nContext = React.createContext<ProviderValue<any> | undefined>(undefined);
 
@@ -48,7 +52,7 @@ export function createI18nHooks<D extends Def>
 
   return {
     getLanguage,
-    r: (root, rest = "") => root + rest as Lang<Def>,
+    i,
     Provider: ({ children }) => {
       const [current, setCurrent] = useState<Language<D> | undefined>(undefined);
 
@@ -76,6 +80,6 @@ export function createI18nHooks<D extends Def>
       );
     },
     useI18n: useI18nContext,
-    p: (t) => t,
+    p,
   };
 }
