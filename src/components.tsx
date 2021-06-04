@@ -12,7 +12,10 @@ export const Localized =
 
     const i18n = useI18nContext();
 
-    return i18n.translate(id, args) as unknown as React.ReactElement;
+    return useMemo(
+      () => i18n.translate(id, args) as unknown as React.ReactElement,
+      [id, args, i18n.currentLanguage]
+    );
   };
 
 export const createComponents = <D extends Definitions,>
