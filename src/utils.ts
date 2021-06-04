@@ -2,7 +2,9 @@ import { Language, Definitions } from "./types";
 
 const splitter = /(\{\})/;
 
-export function replacePlaceholders(definition: string, args: React.ReactNode[]): React.ReactNode | string {
+export function replacePlaceholders(
+  definition: string,
+  args: React.ReactNode[]): React.ReactNode | string {
   const array = definition.split(splitter) as React.ReactNode[];
   let ri = 0;
 

@@ -21,7 +21,8 @@ export type PartialLangFromFull<LAPL extends FullLang<any>> =
 
 export type PartialLang<D extends Definitions> = PartialLangFromFull<FullLang<D>>;
 
-export type RestLang<D extends Definitions, L extends Lang<D>, Partial extends PartialLang<D>> =
+export type RestLang
+<D extends Definitions, L extends Lang<D>, Partial extends PartialLang<D>> =
   L extends `${Partial}${infer Rest}` ? Rest : never;
 
 export interface Language<D extends Definitions> {
