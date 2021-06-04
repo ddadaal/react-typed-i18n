@@ -1,17 +1,10 @@
-import React, { useContext } from "react";
-import { I18nContext } from "src/core";
-import { Lang } from "./types";
+import React from "react";
+import { useI18nContext } from "./core";
+import { Definitions, Lang } from "./types";
 
 export interface LocalizedProps<Lang> {
   id: Lang;
   args?: React.ReactNode[];
-}
-
-export function useI18nContext() {
-  const i18n = useContext(I18nContext);
-  if (!i18n) { throw new Error("Wrap the component with I18nProvider.");}
-
-  return i18n;
 }
 
 export const Localized = React.memo(
@@ -23,3 +16,5 @@ export const Localized = React.memo(
 
   });
 
+export const createComponents = <D extends Definitions,>
+  () => ({ Localized: Localized as React.FC<LocalizedProps<Lang<D>>> });

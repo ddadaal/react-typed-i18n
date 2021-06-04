@@ -1,5 +1,4 @@
-import React, { useCallback, useState } from "react";
-import { Localized, LocalizedProps, useI18nContext } from "./Localized";
+import React, { useCallback, useContext, useState } from "react";
 import {
   AsyncLanguage, Definitions as Def,
   Lang, Language, PartialLang, RestLang,
@@ -21,9 +20,14 @@ export interface I18n<D extends Def> {
   TRest extends RestLang<D, Lang<D>, TPartial>>
   (root: TPartial, rest: TRest): `${TPartial}${TRest}`;
 
-  Localized: React.FC<LocalizedProps<Lang<D>>>;
-
   useI18n: () => ProviderValue<D>;
+}
+
+export function useI18nContext() {
+  const i18n = useContext(I18nContext);
+  if (!i18n) { throw new Error("Wrap the component with I18nProvider.");}
+
+  return i18n;
 }
 
 export const I18nContext = React.createContext<ProviderValue<any> | undefined>(undefined);
@@ -69,7 +73,6 @@ export function createI18nHooks<D extends Def>
         </I18nContext.Provider>
       );
     },
-    Localized: Localized as any,
     useI18n: useI18nContext,
   };
 }
