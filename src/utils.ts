@@ -1,4 +1,4 @@
-import { Language, Definitions } from "./types";
+import { Definitions } from "./types";
 
 const splitter = /(\{\})/;
 
@@ -25,8 +25,8 @@ export function replacePlaceholders(
 }
 
 
-export const getDefinition = (language: Language<Definitions>, id: string): string => {
-  let content = language.definitions;
+export const getDefinition = (definitions: Definitions, id: string): string => {
+  let content = definitions;
   for (const key of id.split(".")) {
     if (typeof content === "undefined") {
       throw new RangeError(`unidentified id ${id}`);

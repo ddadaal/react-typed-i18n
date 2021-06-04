@@ -8,7 +8,7 @@ type Concat<T, U> = `${string & T}${(StringOnly<U>) extends ""
 
 export type Definitions = {};
 
-export type Lang<D extends Definitions> = D extends string
+export type Lang<D extends string | Definitions> = D extends string
   ? ""
   : `${ValueOf<{[k in keyof D]: Concat<k, Lang<D[k]>>}>}`
 
@@ -25,11 +25,14 @@ export type RestLang
 <D extends Definitions, L extends Lang<D>, Partial extends PartialLang<D>> =
   L extends `${Partial}${infer Rest}` ? Rest : never;
 
-export interface Language<D extends Definitions> {
-  name: string;
-  definitions: D;
-}
+export type LazyDefinitions<D extends Definitions> = () => Promise<D>;
 
-export type AsyncLanguage<D extends Definitions> = () => Promise<Language<D>>;
+export type LoadedDefinitions<D extends Definitions> = D;
 
+export type LanguageSpec<D extends Definitions, Info> =
+  [info: Info, def: LazyDefinitions<D> | LoadedDefinitions<D>]
+
+
+export type LanguageDictionary<D extends Definitions, Info> =
+  Record<string, LanguageSpec<D, Info>>;
 

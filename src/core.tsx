@@ -1,29 +1,33 @@
 import React, { useCallback, useContext, useState } from "react";
 import {
-  AsyncLanguage, Definitions as Def,
-  Lang, Language, PartialLang, RestLang,
+  Definitions as Def,
+  Lang, PartialLang, RestLang, LoadedDefinitions,
+  LanguageDictionary, LazyDefinitions, LanguageSpec,
 } from "./types";
 import { getDefinition, replacePlaceholders } from "./utils";
 
-export interface ProviderValue<D extends Def> {
-  current: Language<D> | undefined;
-  changeLanguage: (name: Lang<D>) => Promise<void>;
+export interface ProviderValue<D extends Def, I> {
+  currentLanguage: {
+    info: I;
+    definitions: LoadedDefinitions<Def>;
+  };
+  changeLanguage: (spec: LanguageSpec<D, I>) => Promise<void>;
   translate: (id: Lang<D>, args?: React.ReactNode[]) => string | React.ReactNode;
 }
 
-export interface I18n<D extends Def> {
-  getLanguage: (name: string) => Promise<Language<D> | undefined>;
-  Provider: React.FC<{ initialLanguage: Language<D> }>;
+export interface I18n<D extends Def, I> {
+  Provider: React.FC<{
+    initial: {
+      info: I;
+      definitions: D
+    };
+  }>;
 
   i<TRoot extends Lang<D>>(root: TRoot): TRoot;
-  i<TPartial extends PartialLang<D>,
-  TRest extends RestLang<D, Lang<D>, TPartial>>
-  (root: TPartial, rest: TRest): `${TPartial}${TRest}`;
-
   p: <TPartial extends PartialLang<D>, TRest extends RestLang<D, Lang<D>, TPartial>>
   (t: TPartial) => (rest: TRest) => `${TPartial}${TRest}`
 
-  useI18n: () => ProviderValue<D>;
+  useI18n: () => ProviderValue<D, I>;
 }
 
 export function useI18nContext() {
@@ -33,44 +37,49 @@ export function useI18nContext() {
   return i18n;
 }
 
-const i: I18n<any>["i"] = (root, rest = "") => (root + rest) as any;
-const p: I18n<any>["p"] = (t) => (s) => (t+s) as any;
+const i: I18n<any, any>["i"] = (root) => root;
+const p: I18n<any, any>["p"] = (t) => (s) => (t+s) as any;
 
-export const I18nContext = React.createContext<ProviderValue<any> | undefined>(undefined);
+export const I18nContext =
+  React.createContext<ProviderValue<any, any> | undefined>(undefined);
 
-export function createI18nHooks<D extends Def>(
-  languages: (Language<D> | AsyncLanguage<D>)[],
-): I18n<D> {
+export const languageDictionary =
+<D extends Def, I, Dict extends LanguageDictionary<D, I>>
+  (t: Dict) => t as Dict;
 
-  async function getLanguage(name: string) {
-    const l = languages.find((l) => l.name === name);
-    if (l) {
-      return typeof l === "function" ? await l() : l;
-    } else {
-      return undefined;
-    }
+export const loadDefinitions = async <D extends Def>
+(lang: LazyDefinitions<D> | LoadedDefinitions<D>) => {
+  if (typeof lang === "function") {
+    return await (lang as () => Promise<D>)();
+  } else {
+    return lang;
   }
+};
+
+export function createI18nHooks<D extends Def, I>(
+  dict: LanguageDictionary<D, I>,
+): I18n<D, I> {
 
   return {
-    getLanguage,
     i,
-    Provider: ({ initialLanguage, children }) => {
-      const [current, setCurrent] = useState<Language<D>>(initialLanguage);
+    Provider: ({ initial, children }) => {
+      const [current, setCurrent] = useState(initial);
 
-      const changeLanguage = useCallback(async (name: string) => {
-        const l = await getLanguage(name);
-        if (l) {
-          setCurrent(l);
-        }
-      }, [languages]);
+      const changeLanguage = useCallback(async (spec: LanguageSpec<D, I>) => {
+        console.log(spec);
+        setCurrent({
+          info: spec[0],
+          definitions: await loadDefinitions(spec[1]),
+        });
+      }, [dict]);
 
       const translate = useCallback((id: string, args: React.ReactNode[]) => {
-        return replacePlaceholders(getDefinition(current, id), args);
-      }, [languages]);
+        return replacePlaceholders(getDefinition(current.definitions, id), args);
+      }, [dict, current]);
 
       return (
         <I18nContext.Provider value={{
-          current,
+          currentLanguage: current,
           changeLanguage,
           translate,
         }}
