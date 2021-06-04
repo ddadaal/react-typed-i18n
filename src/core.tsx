@@ -13,7 +13,7 @@ export interface ProviderValue<D extends Def> {
 
 export interface I18n<D extends Def> {
   getLanguage: (name: string) => Promise<Language<D> | undefined>;
-  Provider: React.FC;
+  Provider: React.FC<{ initialLanguage: Language<D> }>;
 
   i<TRoot extends Lang<D>>(root: TRoot): TRoot;
   i<TPartial extends PartialLang<D>,
@@ -38,8 +38,9 @@ const p: I18n<any>["p"] = (t) => (s) => (t+s) as any;
 
 export const I18nContext = React.createContext<ProviderValue<any> | undefined>(undefined);
 
-export function createI18nHooks<D extends Def>
-(languages: (Language<D> | AsyncLanguage<D>)[]): I18n<D> {
+export function createI18nHooks<D extends Def>(
+  languages: (Language<D> | AsyncLanguage<D>)[],
+): I18n<D> {
 
   async function getLanguage(name: string) {
     const l = languages.find((l) => l.name === name);
@@ -53,8 +54,8 @@ export function createI18nHooks<D extends Def>
   return {
     getLanguage,
     i,
-    Provider: ({ children }) => {
-      const [current, setCurrent] = useState<Language<D> | undefined>(undefined);
+    Provider: ({ initialLanguage, children }) => {
+      const [current, setCurrent] = useState<Language<D>>(initialLanguage);
 
       const changeLanguage = useCallback(async (name: string) => {
         const l = await getLanguage(name);
@@ -63,8 +64,7 @@ export function createI18nHooks<D extends Def>
         }
       }, [languages]);
 
-      const translate = useCallback(async (id: string, args: React.ReactNode[]) => {
-        if (!current) { throw new Error("Load language first.");}
+      const translate = useCallback((id: string, args: React.ReactNode[]) => {
         return replacePlaceholders(getDefinition(current, id), args);
       }, [languages]);
 

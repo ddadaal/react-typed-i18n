@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Localized, p, Provider, useI18n } from "./i18n";
+import en from "./i18n/en";
 
 const buttonRoot = p("button.");
 
 function Root() {
   return (
-    <Provider>
+    <Provider initialLanguage={en}>
       <App />
     </Provider>
   );
