@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { Localized, p, useI18n } from "./i18n";
+import { Localized, p, Provider, useI18n } from "./i18n";
 
 const buttonRoot = p("button.");
+
+function Root() {
+  return (
+    <Provider>
+      <App />
+    </Provider>
+  );
+}
 
 function App() {
 
@@ -23,4 +31,4 @@ function App() {
   );
 }
 
-export default App;
+export default Root;
