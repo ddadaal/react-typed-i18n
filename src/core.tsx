@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
+import { invalidLanguageIdError, noProviderError } from "./errors";
 import {
   Definitions as Def,
   Lang, PartialLang, RestLang, LoadedDefinitions,
@@ -28,9 +29,11 @@ export interface I18n<D extends Def> {
   useI18n: () => ProviderValue<D>;
 }
 
+
+
 export function useI18nContext() {
   const i18n = useContext(I18nContext);
-  if (!i18n) { throw new Error("Wrap the component with I18nProvider.");}
+  if (!i18n) { throw noProviderError();}
 
   return i18n;
 }
@@ -75,7 +78,7 @@ export function createI18nHooks<D extends Def>(
         if (defs) {
           await setLanguage({ id, definitions: defs });
         } else {
-          throw new Error(`No language with id ${id} is found.`);
+          throw invalidLanguageIdError(id);
         }
       }, [dict]);
 
