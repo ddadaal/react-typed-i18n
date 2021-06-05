@@ -1,4 +1,4 @@
-import { createI18n, languageDictionary } from "../../../src";
+import { createI18n, languageDictionary } from "../../src";
 
 const cn = () => import("./cn").then((x) => x.default);
 const en = () => import("./en").then((x) => x.default);

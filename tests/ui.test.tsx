@@ -1,7 +1,9 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import { Localized, Provider } from "./i18n";
 import en from "./i18n/en";
+import { useI18n } from "./i18n";
+import cn from "./i18n/cn";
 
 const Root: React.FC = ({ children }) => {
   return (
@@ -14,11 +16,43 @@ const Root: React.FC = ({ children }) => {
 const renderWithProvider = (children) =>
   render(<Root>{children}</Root>);
 
-it("renders text", async () => {
+it("renders text in current language", async () => {
   const wrapper = renderWithProvider(
     <span data-testid="text">
       <Localized id="button.active" />
     </span>);
 
   expect(wrapper.getByTestId("text").textContent).toBe(en.button.active);
+});
+
+it("changes text if language is changed", async () => {
+
+  const App = () => {
+    const { setLanguageById } = useI18n();
+
+    return (
+      <div>
+        <span data-testid="text">
+          <Localized id="button.active" />
+        </span>
+        <button data-testid="change"
+          onClick={() => setLanguageById("cn")}
+        >
+          Update
+        </button>
+      </div>
+    );
+  };
+
+  const wrapper = renderWithProvider(<App />);
+
+  const getTextContent = () => wrapper.getByTestId("text").textContent;
+
+  expect(getTextContent()).toBe(en.button.active);
+
+  act(() => {
+    fireEvent.click(wrapper.getByTestId("change"));
+  });
+
+  await waitFor(() => expect(getTextContent()).toBe(cn.button.active));
 });
