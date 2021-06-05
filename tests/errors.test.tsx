@@ -2,22 +2,25 @@ import { fireEvent, render } from "@testing-library/react";
 import { Localized, useI18n } from "./i18n";
 import React from "react";
 import { renderWithProvider } from "./utils";
-import { invalidLanguageIdError, noProviderError } from "../src";
+import * as errors from "../src/errors";
 
 jest.mock("../src/errors");
 
 const actuals = jest.requireActual("../src/errors");
 
+// restore implementations except invalidLanguageIdError
+(["noProviderError", "invalidIdError"] as (keyof typeof errors)[])
+  .forEach((k) => {
+    (errors[k] as jest.Mock).mockImplementation(actuals[k]);
+  });
+
 it("throws NoProviderError if not wrapped in Provider", async () => {
 
-  (noProviderError as jest.Mock).mockImplementation(actuals.noProviderError);
-
   expect(() => render(<Localized id="title" />))
-    .toThrowError(noProviderError().message);
+    .toThrowError(errors.noProviderError().message);
 });
 
 it("throws InvalidLanguageIdError if language id is not valid", async () => {
-  jest.mock("../src/errors");
   const App: React.FC = () => {
     const { setLanguageById } = useI18n();
 
@@ -36,5 +39,21 @@ it("throws InvalidLanguageIdError if language id is not valid", async () => {
 
   // the only way to test the error has been generated,
   // since the error occurred in a callback
-  expect(invalidLanguageIdError).toHaveBeenCalled();
+  expect(errors.invalidLanguageIdError).toHaveBeenCalled();
+});
+
+it("throws invalidId if id is not found", () => {
+  const bad = "button.d";
+
+  expect(() => renderWithProvider(<Localized id={bad as any} />))
+    .toThrowError(errors.invalidIdError(bad));
+
+});
+
+it("throws invalidId if the id doesn't point to a string", () => {
+
+  const id = "button";
+
+  expect(() => renderWithProvider(<Localized id={id as any} />))
+    .toThrowError(errors.invalidIdError(id));
 });

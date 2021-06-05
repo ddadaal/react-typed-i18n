@@ -1,3 +1,4 @@
+import { invalidIdError } from "./errors";
 import { Definitions } from "./types";
 
 const splitter = /(\{\})/;
@@ -29,14 +30,14 @@ export const getDefinition = (definitions: Definitions, id: string): string => {
   let content = definitions;
   for (const key of id.split(".")) {
     if (typeof content === "undefined") {
-      throw new RangeError(`unidentified id ${id}`);
+      throw invalidIdError(id);
     }
     // I know what I am doing. Trust me :)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     content = content[key] as any;
   }
   if (typeof content !== "string") {
-    throw new RangeError(`id ${id} does not refer to a string. actual value: ${content}`);
+    throw invalidIdError(id);
   }
   return content;
 };

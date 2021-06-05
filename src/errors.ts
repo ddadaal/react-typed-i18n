@@ -5,3 +5,7 @@ export function noProviderError() {
 export function invalidLanguageIdError(id: string) {
   return new Error(`No language with id ${id} is found.`);
 }
+
+export function invalidIdError(id: string) {
+  return new Error(`Id ${id} is not valid`);
+}
