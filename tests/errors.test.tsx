@@ -45,7 +45,7 @@ it("throws InvalidLanguageIdError if language id is not valid", async () => {
 });
 
 it("throws invalidId if id is not found", () => {
-  const bad = "button.d";
+  const bad = "notvalid.a";
 
   expect(() => renderWithProvider(<Localized id={bad as any} />))
     .toThrowError(errors.invalidIdError(bad));

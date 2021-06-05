@@ -1,6 +1,6 @@
 import { createI18n, languageDictionary } from "../../src";
+import cn from "./cn";
 
-const cn = () => import("./cn").then((x) => x.default);
 const en = () => import("./en").then((x) => x.default);
 
 export const languages = languageDictionary({
