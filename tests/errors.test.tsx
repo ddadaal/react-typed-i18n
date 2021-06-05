@@ -8,8 +8,10 @@ jest.mock("../src/errors");
 
 const actuals = jest.requireActual("../src/errors");
 
-// restore implementations except invalidLanguageIdError
-(["noProviderError", "invalidIdError"] as (keyof typeof errors)[])
+// cannot write as Object.keys
+// restore all implementations
+// eslint-disable-next-line max-len
+(["noProviderError", "invalidIdError", "invalidLanguageIdError"] as (keyof typeof errors)[])
   .forEach((k) => {
     (errors[k] as jest.Mock).mockImplementation(actuals[k]);
   });
