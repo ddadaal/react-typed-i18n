@@ -5,6 +5,7 @@ import en from "./i18n/en";
 import { useI18n } from "./i18n";
 import cn from "./i18n/cn";
 import { renderWithProvider } from "./utils";
+import fr from "./i18n/fr";
 
 const App: React.FC = () => {
   const { setLanguageById } = useI18n();
@@ -14,8 +15,13 @@ const App: React.FC = () => {
       <span data-testid="text">
         <Localized id="button.active" />
       </span>
-      <button data-testid="change"
+      <button data-testid="changeToCn"
         onClick={() => setLanguageById("cn")}
+      >
+          Update
+      </button>
+      <button data-testid="changeToFr"
+        onClick={() => setLanguageById("fr")}
       >
           Update
       </button>
@@ -36,9 +42,15 @@ it("changes text if language is changed", async () => {
   expect(getTextContent()).toBe(en.button.active);
 
   act(() => {
-    fireEvent.click(wrapper.getByTestId("change"));
+    fireEvent.click(wrapper.getByTestId("changeToCn"));
   });
 
   await waitFor(() => expect(getTextContent()).toBe(cn.button.active));
+
+  act(() => {
+    fireEvent.click(wrapper.getByTestId("changeToFr"));
+  });
+
+  await waitFor(() => expect(getTextContent()).toBe(fr.button.active));
 });
 

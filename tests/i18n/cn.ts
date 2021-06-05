@@ -1,5 +1,5 @@
 export default {
-  title: "react-typed-i18n测试页面",
+  title: "react-typed-i18n测试",
   interpolation1: "插入 {} 测试",
   interpolation2: "插入 {} 测 {} 试",
   button: {

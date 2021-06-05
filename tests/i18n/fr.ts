@@ -3,7 +3,7 @@ export default {
   interpolation1: "inter {} polation",
   interpolation2: "inter {} po {} lation",
   button: {
-    active: "Active Button",
-    inactive: "Inactive Button",
+    active: "active bouton",
+    inactive: "inactive bouton",
   },
 };
