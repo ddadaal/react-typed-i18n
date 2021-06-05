@@ -29,10 +29,11 @@ export type LazyDefinitions<D extends Definitions> = () => Promise<D>;
 
 export type LoadedDefinitions<D extends Definitions> = D;
 
-export type LanguageSpec<D extends Definitions, Info> =
-  [info: Info, def: LazyDefinitions<D> | LoadedDefinitions<D>]
+export type Language<D extends Definitions> = {
+  id: string;
+  definitions: LazyDefinitions<D> | LoadedDefinitions<D>;
+}
 
-
-export type LanguageDictionary<D extends Definitions, Info> =
-  Record<string, LanguageSpec<D, Info>>;
+export type LanguageDictionary<D extends Definitions> =
+  Record<string, D | (() => Promise<D>)>;
 

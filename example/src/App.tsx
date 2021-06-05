@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { languages, Localized, p, Provider, useI18n } from "./i18n";
+import { languageInfo, Localized, p, Provider, useI18n } from "./i18n";
 import en from "./i18n/en";
 
 const buttonRoot = p("button.");
@@ -7,8 +7,8 @@ const buttonRoot = p("button.");
 function Root() {
 
   return (
-    <Provider initial={{
-      info: languages.en[0],
+    <Provider initialLanguage={{
+      id: "en",
       definitions: en,
     }}
     >
@@ -35,19 +35,14 @@ function App() {
       </button>
       <div>
         <select
-          value={i18n.currentLanguage.info.name}
+          value={i18n.currentLanguage.id}
           onChange={(e) => {
-            const spec = Object.entries(languages)
-              .find(([, [info]]) => info.name === e.target.value);
-
-            if (spec) {
-              i18n.changeLanguage(spec[1]);
-            }
+            i18n.setLanguageById(e.target.value);
           }}
         >
-          {Object.entries(languages).map(([id, [info]]) => (
-            <option key={id} value={info.name}>
-              {info.name}
+          {Object.entries(languageInfo).map(([id, { name }]) => (
+            <option key={id} value={id}>
+              {name}
             </option>
           ))}
         </select>

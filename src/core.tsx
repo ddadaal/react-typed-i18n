@@ -2,32 +2,30 @@ import React, { useCallback, useContext, useState } from "react";
 import {
   Definitions as Def,
   Lang, PartialLang, RestLang, LoadedDefinitions,
-  LanguageDictionary, LazyDefinitions, LanguageSpec,
+  LanguageDictionary, LazyDefinitions, Language,
 } from "./types";
 import { getDefinition, replacePlaceholders } from "./utils";
 
-export interface ProviderValue<D extends Def, I> {
-  currentLanguage: {
-    info: I;
-    definitions: LoadedDefinitions<Def>;
-  };
-  changeLanguage: (spec: LanguageSpec<D, I>) => Promise<void>;
+export interface ProviderValue<D extends Def> {
+  currentLanguage: Language<Def>;
+  setLanguageById: (id: string) => Promise<void>;
+  setLanguage: (language: Language<D>) => Promise<void>;
   translate: (id: Lang<D>, args?: React.ReactNode[]) => string | React.ReactNode;
 }
 
-export interface I18n<D extends Def, I> {
+export interface I18n<D extends Def> {
   Provider: React.FC<{
-    initial: {
-      info: I;
-      definitions: D
-    };
+    initialLanguage: {
+      id: string;
+      definitions: LoadedDefinitions<D>;
+    }
   }>;
 
   i<TRoot extends Lang<D>>(root: TRoot): TRoot;
   p: <TPartial extends PartialLang<D>, TRest extends RestLang<D, Lang<D>, TPartial>>
   (t: TPartial) => (rest: TRest) => `${TPartial}${TRest}`
 
-  useI18n: () => ProviderValue<D, I>;
+  useI18n: () => ProviderValue<D>;
 }
 
 export function useI18nContext() {
@@ -37,14 +35,14 @@ export function useI18nContext() {
   return i18n;
 }
 
-const i: I18n<any, any>["i"] = (root) => root;
-const p: I18n<any, any>["p"] = (t) => (s) => (t+s) as any;
+const i: I18n<any>["i"] = (root) => root;
+const p: I18n<any>["p"] = (t) => (s) => (t+s) as any;
 
 export const I18nContext =
-  React.createContext<ProviderValue<any, any> | undefined>(undefined);
+  React.createContext<ProviderValue<any> | undefined>(undefined);
 
 export const languageDictionary =
-<D extends Def, I, Dict extends LanguageDictionary<D, I>>
+<D extends Def, Dict extends LanguageDictionary<D>>
   (t: Dict) => t as Dict;
 
 export const loadDefinitions = async <D extends Def>
@@ -56,21 +54,29 @@ export const loadDefinitions = async <D extends Def>
   }
 };
 
-export function createI18nHooks<D extends Def, I>(
-  dict: LanguageDictionary<D, I>,
-): I18n<D, I> {
+export function createI18nHooks<D extends Def>(
+  dict: LanguageDictionary<D>,
+): I18n<D> {
 
   return {
     i,
-    Provider: ({ initial, children }) => {
-      const [current, setCurrent] = useState(initial);
+    Provider: ({ initialLanguage, children }) => {
+      const [current, setCurrent] = useState(initialLanguage);
 
-      const changeLanguage = useCallback(async (spec: LanguageSpec<D, I>) => {
-        console.log(spec);
+      const setLanguage = useCallback(async (language: Language<D>) => {
         setCurrent({
-          info: spec[0],
-          definitions: await loadDefinitions(spec[1]),
+          id: language.id,
+          definitions: await loadDefinitions(language.definitions),
         });
+      }, [dict]);
+
+      const setLanguageById = useCallback(async (id: string) => {
+        const defs = dict[id];
+        if (defs) {
+          await setLanguage({ id, definitions: defs });
+        } else {
+          throw new Error(`No language with id ${id} is found.`);
+        }
       }, [dict]);
 
       const translate = useCallback((id: string, args: React.ReactNode[]) => {
@@ -80,7 +86,8 @@ export function createI18nHooks<D extends Def, I>(
       return (
         <I18nContext.Provider value={{
           currentLanguage: current,
-          changeLanguage,
+          setLanguageById,
+          setLanguage,
           translate,
         }}
         >

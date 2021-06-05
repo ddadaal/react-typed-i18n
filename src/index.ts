@@ -6,10 +6,10 @@ export * from "./core";
 export * from "./types";
 export * from "./components";
 
-export function createI18n<D extends Definitions, I>
-(init: LanguageDictionary<D, I>) {
+export function createI18n<D extends Definitions>
+(init: LanguageDictionary<D>) {
   return {
-    ...createI18nHooks<D, I>(init),
+    ...createI18nHooks<D>(init),
     ...createComponents<D>(),
   };
 }
