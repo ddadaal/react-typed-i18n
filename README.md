@@ -1,5 +1,8 @@
 # react-typed-i18n
 
+[![Build and Test](https://github.com/ddadaal/react-typed-i18n/actions/workflows/build.yml/badge.svg)](https://github.com/ddadaal/react-typed-i18n/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/github/ddadaal/react-typed-i18n/badge.svg?branch=master)](https://coveralls.io/github/ddadaal/react-typed-i18n?branch=master)
+
 A strongly typed i18n library for react.
 
 ## Demo
