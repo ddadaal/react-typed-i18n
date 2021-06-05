@@ -17,8 +17,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "baseUrl": ".",
+    "jsx": "react",
+    "baseUrl": "."
   },
   "exclude": [
     "node_modules"
