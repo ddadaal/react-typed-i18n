@@ -1,6 +1,12 @@
 # react-typed-i18n
 
-A strongly typed i18n library for react featuring
+A strongly typed i18n library for react.
+
+## Demo
+
+![Demo](docs/demo.gif)
+
+## Features
 
 - **typechecked** text id using TypeScript's [Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
 - **interpolation** with `string` and `React.ReactNode`
@@ -13,7 +19,7 @@ This library is the successor of [`simstate-i18n`](https://github.com/ddadaal/si
 - use Template Literal Types to typecheck the text id
 - is way easier to setup
 
-# Usage
+## Usage
 
 1. Define your definitions (one file per language)
     - use `{}` as a placeholder for interpolation
@@ -136,6 +142,6 @@ export default () => {
 }
 ```
 
-# License
+## License
 
 MIT
