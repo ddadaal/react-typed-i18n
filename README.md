@@ -1,22 +1,30 @@
-# react-typed-i18n
+<style>
+.center { text-align: center; }
+</style>
+<h1 class="center">react-typed-i18n</h1>
+
+<div class="center">
 
 [![npm version](https://badge.fury.io/js/react-typed-i18n.svg)](https://badge.fury.io/js/react-typed-i18n)
 [![Build and Test](https://github.com/ddadaal/react-typed-i18n/actions/workflows/build.yml/badge.svg)](https://github.com/ddadaal/react-typed-i18n/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/ddadaal/react-typed-i18n/badge.svg?branch=master)](https://coveralls.io/github/ddadaal/react-typed-i18n?branch=master)
 
-A strongly typed i18n library for react.
+</div>
 
-## Demo
+<p class="center">
+A strongly typed i18n library for react.
+</p>
 
 ![Demo](docs/demo.gif)
 
-## Install
+
+# Install
 
 ```
 npm install --save react-typed-i18n
 ```
 
-## Features
+# Features
 
 - **Typechecked** text id using TypeScript's [Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
 - **Interpolation** with `string` and `React.ReactNode`
@@ -31,7 +39,21 @@ This library is the successor of [`simstate-i18n`](https://github.com/ddadaal/si
 - use Template Literal Types to typecheck the text id
 - is way easier to setup
 
-## Usage
+# Example
+
+My personal website [ddadaal.me](https://ddadaal.me) is built with this library.
+
+A example project is provided under the `example` folder. Run the following commands to run it.
+
+```bash
+# On the library project root
+npm install
+npm run build
+cd example
+npm run dev
+```
+
+# Usage
 
 1. Define your definitions (one file per language)
     - use `{}` as a placeholder for interpolation
@@ -154,9 +176,9 @@ export default () => {
 }
 ```
 
-## Helpers
+# Helpers
 
-### Helpers functions to generate text id
+## Helpers functions to generate text id
 
 ```tsx
 import { p, i } from "./i18n";
@@ -172,7 +194,7 @@ const prefix = p("hello.");
 const fullId = prefix("world");
 ```
 
-### All ids type
+## All ids type
 
 ```tsx
 // src/i18n/en.ts
@@ -191,6 +213,6 @@ export type TextId = TextIdFromLangDict<typeof languages>;
 ```
 
 
-## License
+# License
 
 MIT
