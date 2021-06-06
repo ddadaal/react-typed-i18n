@@ -19,3 +19,4 @@ tsconfig.json
 *.config.js
 src
 .travis.yml
+example
