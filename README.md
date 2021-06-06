@@ -1,17 +1,14 @@
-<style>
-.center { text-align: center; }
-</style>
-<h1 class="center">react-typed-i18n</h1>
+<h1 style="text-align: center">react-typed-i18n</h1>
 
-<div class="center">
+<div style="text-align: center">
 
-[![npm version](https://badge.fury.io/js/react-typed-i18n.svg)](https://badge.fury.io/js/react-typed-i18n)
+![npm](https://img.shields.io/npm/v/react-typed-i18n)
 [![Build and Test](https://github.com/ddadaal/react-typed-i18n/actions/workflows/build.yml/badge.svg)](https://github.com/ddadaal/react-typed-i18n/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/ddadaal/react-typed-i18n/badge.svg?branch=master)](https://coveralls.io/github/ddadaal/react-typed-i18n?branch=master)
 
 </div>
 
-<p class="center">
+<p style="text-align: center">
 A strongly typed i18n library for react.
 </p>
 
