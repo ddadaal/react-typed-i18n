@@ -11,10 +11,12 @@ A strongly typed i18n library for react.
 
 ## Features
 
-- **typechecked** text id using TypeScript's [Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
-- **interpolation** with `string` and `React.ReactNode`
-- **async language loading** for code splitting
-- **hot language reloading** without reloading page
+- **Typechecked** text id using TypeScript's [Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
+- **Interpolation** with `string` and `React.ReactNode`
+- **Async language loading** for code splitting
+- **Hot language reloading** without reloading page
+- No external dependency and **1.3 KiB** gzipped
+- **100%** line and branch test coverage
 
 This library is the successor of [`simstate-i18n`](https://github.com/ddadaal/simstate-i18n). Most concepts and functionalities remain unchanged, but this library
 
