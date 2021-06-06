@@ -1,5 +1,6 @@
 # react-typed-i18n
 
+[![npm version](https://badge.fury.io/js/react-typed-i18n.svg)](https://badge.fury.io/js/react-typed-i18n)
 [![Build and Test](https://github.com/ddadaal/react-typed-i18n/actions/workflows/build.yml/badge.svg)](https://github.com/ddadaal/react-typed-i18n/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/ddadaal/react-typed-i18n/badge.svg?branch=master)](https://coveralls.io/github/ddadaal/react-typed-i18n?branch=master)
 
@@ -8,6 +9,12 @@ A strongly typed i18n library for react.
 ## Demo
 
 ![Demo](docs/demo.gif)
+
+## Install
+
+```
+npm install --save react-typed-i18n
+```
 
 ## Features
 
@@ -119,7 +126,7 @@ export default () => {
 ```
 
 5. Use `useI18n` hook to get helper functions like `setLanguageById`
-    - After clicking the button, the p will displays: 你好 **AAA** 世界 **BBB**
+    - After clicking the button, the p will display: 你好 **AAA** 世界 **BBB**
 
 ```tsx
 // ./src/App.tsx
