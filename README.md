@@ -147,6 +147,43 @@ export default () => {
 }
 ```
 
+## Helpers
+
+### Helpers functions to generate text id
+
+```tsx
+import { p, i } from "./i18n";
+
+// i is just an identity function with typecheck
+const id = i("hello.world"); // id === "hello.world"
+
+// p generates a prefix function.
+// When the function is called,
+// two part are concatenated.
+// both part are typechecked.
+const prefix = p("hello.");
+const fullId = prefix("world");
+```
+
+### All ids type
+
+```tsx
+// src/i18n/en.ts
+export default {
+  a: "a",
+  b: {
+    c: "c",
+  },
+};
+
+// src/i18n/index.ts
+import { TextIdFromLangDict } from "react-typed-i18n";
+
+// "a" | "b.c"
+export type TextId = TextIdFromLangDict<typeof languages>;
+```
+
+
 ## License
 
 MIT
