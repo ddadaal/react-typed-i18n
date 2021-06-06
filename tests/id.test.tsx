@@ -8,3 +8,11 @@ it("generates prefix and id", () => {
   const prefix = p("button.");
   expect(prefix("active")).toBe("button.active");
 });
+
+it("expects error", () => {
+  // @ts-expect-error
+  i("button.bad");
+
+  // @ts-expect-error
+  p("title.");
+});

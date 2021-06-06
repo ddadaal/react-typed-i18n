@@ -11,7 +11,7 @@
   "description": "Strongly-Typed i18n solution for React",
   "scripts": {
     "build": "microbundle --jsx React.createElement",
-    "test": "tsd && jest",
+    "test": "jest",
     "release": "standard-version"
   },
   "author": "Chen Junda <ddadaal@outlook.com>",
@@ -35,10 +35,6 @@
     "react-dom": "^17.0.2",
     "standard-version": "^9.3.0",
     "ts-jest": "^27.0.2",
-    "tsd": "^0.17.0",
     "typescript": "^4.3.2"
-  },
-  "tsd": {
-    "directory": "tests"
   }
 }
