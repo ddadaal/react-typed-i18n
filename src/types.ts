@@ -37,3 +37,5 @@ export type Language<D extends Definitions> = {
 export type LanguageDictionary<D extends Definitions> =
   Record<string, D | (() => Promise<D>)>;
 
+export type TextIdFromLangDict<Dict extends LanguageDictionary<any>> =
+  Dict extends LanguageDictionary<infer D> ? Lang<D> : never;
