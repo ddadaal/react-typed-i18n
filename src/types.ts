@@ -2,24 +2,28 @@ type ValueOf<T> = T[keyof T];
 
 type StringOnly<T> = string & T;
 
-type Concat<T, U> = `${string & T}${(StringOnly<U>) extends ""
-  ? ""
-  : `.${StringOnly<U>}`}`;
+type Concat<T, U> = `${string & T}.${string & U}`;
+
+type RemoveTrailingDot<T extends string> = T extends `${infer U}.` ? U : T;
 
 export type Definitions = {};
 
-export type Lang<D extends string | Definitions> = D extends string
+type LangRec<D extends string | Definitions> = D extends string
   ? ""
-  : `${ValueOf<{[k in keyof D]: Concat<k, Lang<D[k]>>}>}`
+  : `${ValueOf<{[k in keyof D]: Concat<k, LangRec<D[k]>>}>}`
 
-export type FullLang<D extends Definitions> = D extends string
+export type Lang<D extends Definitions> = RemoveTrailingDot<LangRec<D>>;
+
+type FullLang<D extends string | Definitions> = D extends string
   ? ""
-  : `${ValueOf<{[k in keyof D]: `${(StringOnly<k>)}.` | Concat<k, Lang<D[k]>>}>}`
+  : `${ValueOf<{[k in keyof D]: `${(StringOnly<k>)}.` | Concat<k, FullLang<D[k]>>}>}`
 
-export type PartialLangFromFull<LAPL extends FullLang<any>> =
-  LAPL extends `${infer Start}.` ? `${Start}.` : never;
+type PartialLangFromFull
+  <D extends Definitions, FL extends FullLang<D>, L extends Lang<D>> =
+  FL extends `${string}.` ? FL extends `${L}.` ? never : FL : never;
 
-export type PartialLang<D extends Definitions> = PartialLangFromFull<FullLang<D>>;
+export type PartialLang<D extends Definitions> =
+  PartialLangFromFull<D, FullLang<D>, Lang<D>>;
 
 export type RestLang
 <D extends Definitions, L extends Lang<D>, Partial extends PartialLang<D>> =
