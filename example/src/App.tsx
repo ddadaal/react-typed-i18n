@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { languageInfo, Localized, p, Provider, useI18n } from "./i18n";
+import { languageInfo, Localized, prefix, Provider, useI18n } from "./i18n";
 import en from "./i18n/en";
 
-const buttonRoot = p("button.");
+const p = prefix("button.");
 
 function Root() {
 
@@ -31,7 +31,7 @@ function App() {
         <Localized id="clicked" args={[times]} />
       </h2>
       <button onClick={() => setTimes((b) => b+1)}>
-        <Localized id={buttonRoot(times % 2 == 0 ? "active" : "inactive")} />
+        <Localized id={p(times % 2 == 0 ? "active" : "inactive")} />
       </button>
       <div>
         <select

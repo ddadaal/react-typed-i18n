@@ -90,7 +90,7 @@ export const languages = languageDictionary({
   en,
 });
 
-export const { Localized, Provider, i, p, useI18n } = createI18n(languages);
+export const { Localized, Provider, id, prefix, useI18n } = createI18n(languages);
 ```
 
 3. Wrap the component tree with `Provider` component
@@ -178,17 +178,17 @@ export default () => {
 ## Helpers functions to generate text id
 
 ```tsx
-import { p, i } from "./i18n";
+import { prefix, id } from "./i18n";
 
-// i is just an identity function with typecheck
-const id = i("hello.world"); // id === "hello.world"
+// id is just an identity function with typecheck
+const i = id("hello.world"); // id === "hello.world"
 
-// p generates a prefix function.
+// prefix generates a prefix function.
 // When the function is called,
 // two part are concatenated.
 // both part are typechecked.
-const prefix = p("hello.");
-const fullId = prefix("world");
+const p = prefix("hello.");
+const fullId = p("world");
 ```
 
 ## All ids type

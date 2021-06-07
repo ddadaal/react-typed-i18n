@@ -13,6 +13,6 @@ export const languageInfo = {
   en: { name: "English" },
 };
 
-export const { Localized, Provider, i, p, useI18n } = createI18n(languages);
+export const { Localized, Provider, id, prefix, useI18n } = createI18n(languages);
 
 export type TextId = TextIdFromLangDict<typeof languages>;

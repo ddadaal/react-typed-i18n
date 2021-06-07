@@ -1,18 +1,18 @@
-import { i, p } from "./i18n";
+import { id, prefix } from "./i18n";
 
 it("generates id", () => {
-  expect(i("button.active")).toBe("button.active");
+  expect(id("button.active")).toBe("button.active");
 });
 
 it("generates prefix and id", () => {
-  const prefix = p("button.");
-  expect(prefix("active")).toBe("button.active");
+  const p = prefix("button.");
+  expect(p("active")).toBe("button.active");
 });
 
 it("expects error", () => {
   // @ts-expect-error
-  i("button.bad");
+  id("button.bad");
 
   // @ts-expect-error
-  p("title.");
+  prefix("title.");
 });
