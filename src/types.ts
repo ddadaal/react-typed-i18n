@@ -20,7 +20,7 @@ type FullLang<D extends string | Definitions> = D extends string
 
 type PartialLangFromFull
   <D extends Definitions, FL extends FullLang<D>, L extends Lang<D>> =
-  FL extends `${string}.` ? FL extends `${L}.` ? never : FL : never;
+  FL extends `${L}.` ? never : FL;
 
 export type PartialLang<D extends Definitions> =
   PartialLangFromFull<D, FullLang<D>, Lang<D>>;
