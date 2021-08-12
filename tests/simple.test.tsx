@@ -8,20 +8,28 @@ import { renderWithProvider } from "./utils";
 import fr from "./i18n/fr";
 
 const App: React.FC = () => {
-  const { setLanguageById } = useI18n();
+  const i18n = useI18n();
+
+  const translatedString: string = i18n.translateToString("button.active");
 
   return (
     <div>
       <span data-testid="text">
         <Localized id="button.active" />
       </span>
+      <span data-testid="translate">
+        {i18n.translate("button.active")}
+      </span>
+      <span data-testid="translateToString">
+        {translatedString}
+      </span>
       <button data-testid="changeToCn"
-        onClick={() => setLanguageById("cn")}
+        onClick={() => i18n.setLanguageById("cn")}
       >
           Update
       </button>
       <button data-testid="changeToFr"
-        onClick={() => setLanguageById("fr")}
+        onClick={() => i18n.setLanguageById("fr")}
       >
           Update
       </button>
@@ -32,6 +40,8 @@ const App: React.FC = () => {
 it("renders text in current language", async () => {
   const wrapper = renderWithProvider(<App />);
   expect(wrapper.getByTestId("text").textContent).toBe(en.button.active);
+  expect(wrapper.getByTestId("translate").textContent).toBe(en.button.active);
+  expect(wrapper.getByTestId("translateToString").textContent).toBe(en.button.active);
 });
 
 it("changes text if language is changed", async () => {

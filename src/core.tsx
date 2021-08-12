@@ -12,6 +12,7 @@ export interface ProviderValue<D extends Def> {
   setLanguageById: (id: string) => Promise<void>;
   setLanguage: (language: Language<D>) => Promise<void>;
   translate: (id: Lang<D>, args?: React.ReactNode[]) => string | React.ReactNode;
+  translateToString: (id: Lang<D>, args?: React.ReactNode[]) => string;
 }
 
 export interface I18n<D extends Def> {
@@ -86,12 +87,16 @@ export function createI18nHooks<D extends Def>(
         return replacePlaceholders(getDefinition(current.definitions, id), args);
       }, [dict, current]);
 
+      const translateToString = translate as
+        (...args: Parameters<typeof translate>) => string;
+
       return (
         <I18nContext.Provider value={{
           currentLanguage: current,
           setLanguageById,
           setLanguage,
           translate,
+          translateToString,
         }}
         >
           {children}
