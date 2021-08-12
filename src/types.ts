@@ -38,8 +38,14 @@ export type Language<D extends Definitions> = {
   definitions: LazyDefinitions<D> | LoadedDefinitions<D>;
 }
 
+/**
+ * A map from language id to definition object or () => Promise<definition object>.
+ */
 export type LanguageDictionary<D extends Definitions> =
   Record<string, D | (() => Promise<D>)>;
 
+/**
+ * Get an union string type of all text ids of the languages in a language dictionary.
+ */
 export type TextIdFromLangDict<Dict extends LanguageDictionary<any>> =
   Dict extends LanguageDictionary<infer D> ? Lang<D> : never;
