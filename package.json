@@ -14,7 +14,16 @@
     "test": "jest",
     "release": "standard-version"
   },
-  "author": "Chen Junda <ddadaal@outlook.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddadaal/react-typed-i18n"
+  },
+  "author": {
+    "name": "Chen Junda",
+    "email": "ddadaal@outlook.com",
+    "url": "https://ddadaal.me"
+  },
+  "homepage": "https://github.com/ddadaal/react-typed-i18n",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=16.8.0"
