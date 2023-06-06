@@ -10,17 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v2
+      - uses: pnpm/action-setup@v2.2.4
+
+      - uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: 18.x
+          cache: pnpm
 
-      - name: npm ci
-        run: npm ci
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
 
       - name: npm test
-        run: npm test -- --coverage
+        run: pnpm test -- --coverage
 
       - name: Publish to coveralls
         uses: coverallsapp/github-action@master

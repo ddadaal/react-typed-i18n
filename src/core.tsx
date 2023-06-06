@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { PropsWithChildren, useCallback, useContext, useState } from "react";
 import { invalidLanguageIdError, noProviderError } from "./errors";
 import {
   Definitions as Def,
@@ -51,9 +51,9 @@ export interface I18n<D extends Def> {
    * The Provider component.
    * Wrap the Provider component at the root of your component tree.
    */
-  Provider: React.FC<{
+  Provider: React.FC<PropsWithChildren<{
     /**
-     * The initial language object.
+     * The initial language id or object.
      */
     initialLanguage: {
       /**
@@ -66,7 +66,7 @@ export interface I18n<D extends Def> {
        */
       definitions: LoadedDefinitions<D>;
     }
-  }>;
+  }>>;
 
   /**
    * Typechecked util function to get an id.
@@ -80,6 +80,7 @@ export interface I18n<D extends Def> {
    * Prefix function concatenates the prefix and the parameter to get a full text id.
    * @param prefix The prefix.
    */
+  // @ts-ignore
   prefix: <TPartial extends PartialLang<D>, TRest extends RestLang<D, Lang<D>, TPartial>>
   (prefix: TPartial) => (rest: TRest) => `${TPartial}${TRest}`
 

@@ -1,9 +1,10 @@
 import { render } from "@testing-library/react";
-import React from "react";
 import { Provider } from "./i18n";
+import { PropsWithChildren } from "react";
+import React from "react";
 import en from "./i18n/en";
 
-const Root: React.FC = ({ children }) => {
+export const Root = ({ children }: PropsWithChildren<{}>) => {
   return (
     <Provider initialLanguage={{ id: "en", definitions: en }}>
       {children}
@@ -11,6 +12,6 @@ const Root: React.FC = ({ children }) => {
   );
 };
 
-export const renderWithProvider = (children) =>
+export const renderWithProvider = (children: JSX.Element) =>
   render(<Root>{children}</Root>);
 

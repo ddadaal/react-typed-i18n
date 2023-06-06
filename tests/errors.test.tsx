@@ -1,17 +1,19 @@
 import { fireEvent, render } from "@testing-library/react";
 import { Localized, useI18n } from "./i18n";
-import React from "react";
+import React, { useState } from "react";
 import { renderWithProvider } from "./utils";
-import * as errors from "../src/errors";
 
 jest.mock("../src/errors");
+
+import * as errors from "../src/errors";
+
 
 const actuals = jest.requireActual("../src/errors");
 
 // cannot write as Object.keys
 // restore all implementations
 // eslint-disable-next-line max-len
-(["noProviderError", "invalidIdError", "invalidLanguageIdError"] as (keyof typeof errors)[])
+(["noProviderError", "invalidIdError", "invalidLanguageIdError"] satisfies (keyof typeof errors)[])
   .forEach((k) => {
     (errors[k] as jest.Mock).mockImplementation(actuals[k]);
   });
@@ -26,12 +28,30 @@ it("throws InvalidLanguageIdError if language id is not valid", async () => {
   const App: React.FC = () => {
     const { setLanguageById } = useI18n();
 
+    const [error, setError] = useState<Error | undefined>(undefined);
+
     return (
-      <button data-testid="change"
-        onClick={() => setLanguageById("bad")}
-      >
-            Update
-      </button>
+      <div>
+        <button data-testid="change"
+          onClick={async () => {
+            try {
+              await setLanguageById("bad");
+            } catch (e) {
+              setError(e);
+            }
+          }}
+        >
+          Update
+        </button>
+
+        {
+          error ? (
+            <p data-testid="error">
+              {error.message}
+            </p>
+          ) : undefined
+        }
+      </div>
     );
   };
 
@@ -39,9 +59,10 @@ it("throws InvalidLanguageIdError if language id is not valid", async () => {
 
   fireEvent.click(wrapper.getByTestId("change"));
 
-  // the only way to test the error has been generated,
-  // since the error occurred in a callback
-  expect(errors.invalidLanguageIdError).toHaveBeenCalled();
+  await wrapper.findByTestId("error");
+
+  expect(wrapper.getByTestId("error").innerHTML)
+    .toBe(errors.invalidLanguageIdError("bad").message);
 });
 
 it("throws invalidId if id is not found", () => {
