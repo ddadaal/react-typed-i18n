@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "description": "Strongly-Typed i18n solution for React",
   "scripts": {
-    "build": "microbundle --jsx React.createElement",
+    "build": "microbundle --tsconfig tsconfig.build.json --jsx React.createElement",
     "test": "jest",
     "release": "standard-version"
   },
