@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/ddadaal/react-typed-i18n/compare/v2.1.1...v2.2.0) (2023-06-06)
+
+
+### Features
+
+* add "use client" directive in hook and components ([0ccb910](https://github.com/ddadaal/react-typed-i18n/commit/0ccb910c3a06c88487f6ba956bede665e5a15eb6))
+
+
+### Bug Fixes
+
+* update dependencies and migrate to pnpm ([58e46cf](https://github.com/ddadaal/react-typed-i18n/commit/58e46cfa9fc344d21b216f648f9a9dbb0a0e8cb0))
+
 ### [2.1.1](https://github.com/ddadaal/react-typed-i18n/compare/v2.1.0...v2.1.1) (2021-09-15)
 
 ## [2.1.0](https://github.com/ddadaal/react-typed-i18n/compare/v2.0.1...v2.1.0) (2021-08-12)
