@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/ddadaal/react-typed-i18n/compare/v2.2.0...v2.2.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* fix typing files missing ([9395a8c](https://github.com/ddadaal/react-typed-i18n/commit/9395a8c2938dd2d1d2f0ab6d2c8f0883a6f96d0a))
+
 ## [2.2.0](https://github.com/ddadaal/react-typed-i18n/compare/v2.1.1...v2.2.0) (2023-06-06)
 
 
