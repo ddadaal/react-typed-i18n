@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo } from "react";
 import { useI18nContext } from "./core";
 import { Definitions, Lang } from "./types";

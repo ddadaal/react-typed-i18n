@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, useContext, useState } from "react";
 import { invalidLanguageIdError, noProviderError } from "./errors";
 import {
