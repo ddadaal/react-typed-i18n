@@ -6,6 +6,7 @@ export * from "./core";
 export * from "./types";
 export * from "./components";
 export * from "./errors";
+export * from "./utils";
 
 /**
  * Create hooks and components using specified language dictionary.
