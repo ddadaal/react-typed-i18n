@@ -13,7 +13,7 @@ export interface LocalizedProps<D extends Definitions> {
   /**
    * The nth of arg replaces the nth placeholder in the translated text.
    */
-  args?: React.ReactNode[];
+  args?: React.ReactNode[] | Record<string, React.ReactNode>;
 }
 
 /**

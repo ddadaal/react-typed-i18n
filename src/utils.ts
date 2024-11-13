@@ -1,29 +1,84 @@
+import React from "react";
 import { invalidIdError } from "./errors";
 import { Definitions } from "./types";
 
-const splitter = /(\{\})/;
-
 export function replacePlaceholders(
   definition: string,
-  args: React.ReactNode[],
+  args: React.ReactNode[] | Record<string, React.ReactNode>,
 ): React.ReactNode | string {
-  const array = definition.split(splitter) as React.ReactNode[];
-  let ri = 0;
 
-  let containsNonPrimitive = false;
+  let head = 0, index = 0;
 
-  for (let i = 1; i < array.length; i += 2) {
-    if (typeof args[ri] === "object") {
-      containsNonPrimitive = true;
+  let valueArgs: React.ReactNode[] | undefined = undefined;
+
+  const results = [] as React.ReactNode[];
+  let escaped = false;
+
+  let allString = true;
+
+  const append = (text: string | React.ReactNode | undefined) => {
+
+    if (typeof text !== "string") {
+      results.push(text ?? "");
+      allString = false;
+      return;
     }
-    array[i] = args[ri++];
+
+    if (results.length === 0) {
+      results.push(text);
+    } else {
+      if (typeof results[results.length - 1] === "string") {
+        results[results.length - 1] += text;
+      } else {
+        results.push(text);
+      }
+    }
+  };
+
+  while (head < definition.length) {
+    if (definition[head] === "\\") {
+      if (escaped) {
+        append("\\");
+        escaped = false;
+      } else {
+        escaped = true;
+      }
+      head++;
+    } else if (definition[head] === "{") {
+      if (escaped) {
+        append("\\{");
+        escaped = false;
+        head++;
+      } else {
+        head++;
+        if (head < definition.length) {
+          let key = "";
+          while (head < definition.length && definition[head] !== "}") {
+            key += definition[head++];
+          }
+          if (head === definition.length) {
+            append("{" + key);
+            break;
+          } else {
+            head++;
+            if (key === "") {
+              if (!valueArgs) {
+                valueArgs = Array.isArray(args) ? args : Object.values(args);
+              }
+              append(valueArgs[index++]);
+            } else {
+              append(args[key]);
+            }
+          }
+        }
+      }
+    } else {
+      append(definition[head]);
+      head++;
+    }
   }
 
-  if (!containsNonPrimitive) {
-    return array.join("");
-  }
-
-  return array;
+  return allString ? results.join("") : results;
 }
 
 

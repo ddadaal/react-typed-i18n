@@ -32,7 +32,8 @@ export interface ProviderValue<D extends Def> {
    *
    * @throws Error if id does not corresponds to a definition.
    */
-  translate: (id: Lang<D>, args?: React.ReactNode[]) => string | React.ReactNode;
+  translate: (id: Lang<D>, args?: React.ReactNode[] | Record<string, React.ReactNode>)
+    => string | React.ReactNode;
 
   /**
    * Translate id into text of current language.
@@ -43,7 +44,8 @@ export interface ProviderValue<D extends Def> {
    *
    * @throws Error if id does not corresponds to a definition.
    */
-  translateToString: (id: Lang<D>, args?: React.ReactNode[]) => string;
+  translateToString:
+    (id: Lang<D>, args?: React.ReactNode[] | Record<string, React.ReactNode>) => string;
 }
 
 export interface I18n<D extends Def> {

@@ -53,7 +53,7 @@ npm run dev
 # Usage
 
 1. Define your definitions (one file per language)
-    - use `{}` as a placeholder for interpolation
+    - use `{}` or `{key}` as placeholders for interpolation ([more details about interpolation](#interpolations))
     - object can be nested
     - all languages should have identical structures
     - this object is called `Language`
@@ -117,7 +117,7 @@ export default () => {
 ```
 
 4. Use `Localized` in places of raw texts
-    - Use `args` prop to interpolate args into the placeholders
+    - Use `args` prop to interpolate args into the placeholders (you can pass array or object as arguments. [Learn More](#interpolations))
     - A type error will be reported if the id is not valid
     - The `Localized` must be imported from where the `createI18n` is called (for example, `./src/i18n`)
     - The below displays: Hello **AAA** World **BBB**
@@ -172,6 +172,33 @@ export default () => {
   );
 }
 ```
+
+# Interpolations
+
+`react-typed-i18` uses `{}` or `{key}` as placeholders for interpolations.
+
+- `{key}` will be replaced with `args[key]`
+- `{}` will be replaced with `args[i]`, where `i` is `i`th occurrence of `{}` (not counting `{key}`) in the definition string
+  - if `args` is not an array, it will be replaced with `Object.values(args)[i]`.
+    - It's not recommended since the order of the resulting array may not be trivial.
+- If the string to be replaced is `undefined`, it will be replaced as empty string
+- If `{}` or `{key}` is prefixed with `\`, it will be escaped. Prefix a `\` with a `\` will not escape the following `{}` or `{key}`
+
+`{}` and `{key}` can co-exist in one definition.
+
+See the examples:
+
+| definition          | `args`                                 | result                  |
+| ------------------- | -------------------------------------- | ----------------------- |
+| `{} {}`             | `["1", "2"]`                           | `1 2`                   |
+| `{1} {0}`           | `["1", "2"]`                           | `2 1`                   |
+| `{key2} {key1}`     | `{"key1": "value1", "key2": "value2"}` | `value2 value1`         |
+| `{1} {0}`           | `{"key1": "value1", "key2": "value2"}` | `value2 value1`         |
+| `{} {1} {0} {}`     | `["1", "2"]`                           | `1 2 1 2`               |
+| `{} {key2} {1} {}`  | `["1", "2"]`                           | `1  2 1`                |
+| `{} {key2} {1} {}`  | `{"key1": "value1", "key2": "value2"}` | `value1 value2  value2` |
+| `\{0} \\{0} \\\{0}` | `["1"]`                                | `\{0} \1 \\{0}`         |
+
 
 # Helpers
 
