@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/ddadaal/react-typed-i18n/compare/v2.3.0...v2.4.0) (2024-11-13)
+
+
+### Features
+
+* add keyed and indexed interpolations ([f8e0855](https://github.com/ddadaal/react-typed-i18n/commit/f8e085532ff6f02096d6dd0330d9dfcf1925ebab))
+
 ## [2.3.0](https://github.com/ddadaal/react-typed-i18n/compare/v2.2.1...v2.3.0) (2023-06-08)
 
 
