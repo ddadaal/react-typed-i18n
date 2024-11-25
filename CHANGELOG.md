@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.1](https://github.com/ddadaal/react-typed-i18n/compare/v2.4.0...v2.4.1) (2024-11-25)
+
+
+### Bug Fixes
+
+* add the missing `{` when format ends with `{` ([#1](https://github.com/ddadaal/react-typed-i18n/issues/1)) ([f875f1e](https://github.com/ddadaal/react-typed-i18n/commit/f875f1efd511e6b156cf98c70f7df9e4f670f79d))
+
 ## [2.4.0](https://github.com/ddadaal/react-typed-i18n/compare/v2.3.0...v2.4.0) (2024-11-13)
 
 
