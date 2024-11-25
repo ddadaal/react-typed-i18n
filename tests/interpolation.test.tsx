@@ -61,6 +61,11 @@ it("tests mixed", async () => {
   assert("testCase1", { key1: "value1", key2: "value2" }, "value1 value2  value2");
 });
 
+it("tests incomplete {", async () => {
+  assert("incompleteQuote", ["123"], "test {");
+  assert("incompleteQuote2", ["123"], "test {key");
+});
+
 it("interpolates with indexed placeholders", async () => {
 
   assert("mixedIndexed", ["arg1", "arg2"], "arg1 arg2 arg2 arg1");

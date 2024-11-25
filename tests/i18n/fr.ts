@@ -10,6 +10,8 @@ export default {
   mixedIndexed: "{} {1} {} {0}",
   objectArgs: "{arg2} test{arg1} test",
   objectAndIndexedArgs: "{} {arg2} test{arg1} test {}",
+  incompleteQuote: "test {",
+  incompleteQuote2: "test {key",
   testEscape: "\\{0} \\\\{0} \\\\\\\{0}",
   testCase1: "{} {key2} {1} {}",
 };

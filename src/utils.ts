@@ -70,6 +70,9 @@ export function replacePlaceholders(
               append(args[key]);
             }
           }
+        } else {
+          append("{");
+          break;
         }
       }
     } else {
