@@ -1,6 +1,6 @@
 {
   "name": "react-typed-i18n",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "type": "module",
   "source": "src/index.ts",
   "exports": {

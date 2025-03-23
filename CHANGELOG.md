@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.2](https://github.com/ddadaal/react-typed-i18n/compare/v2.4.1...v2.4.2) (2025-03-23)
+
 ### [2.4.1](https://github.com/ddadaal/react-typed-i18n/compare/v2.4.0...v2.4.1) (2024-11-25)
 
 
