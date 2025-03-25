@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.3](https://github.com/ddadaal/react-typed-i18n/compare/v2.4.2...v2.4.3) (2025-03-25)
+
+
+### Bug Fixes
+
+* exports.default to modern.js ([6d96cf9](https://github.com/ddadaal/react-typed-i18n/commit/6d96cf9863f20316050867f4bf26dd6a3be970fa))
+
 ### [2.4.2](https://github.com/ddadaal/react-typed-i18n/compare/v2.4.1...v2.4.2) (2025-03-23)
 
 ### [2.4.1](https://github.com/ddadaal/react-typed-i18n/compare/v2.4.0...v2.4.1) (2024-11-25)
