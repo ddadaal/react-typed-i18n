@@ -4,7 +4,7 @@
   "type": "module",
   "source": "src/index.ts",
   "exports": {
-    "default": "./dist/index.umd.js",
+    "default": "./dist/index.modern.js",
     "import": "./dist/index.module.js",
     "require": "./dist/index.cjs",
     "types": "./dist/index.d.ts"
