@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.6.1](https://github.com/ddadaal/react-typed-i18n/compare/v2.6.0...v2.6.1) (2025-12-19)
+
+
+### Bug Fixes
+
+* deduplicate code ([6b43c3f](https://github.com/ddadaal/react-typed-i18n/commit/6b43c3fe0c26913d52aa192181b3536665205f2d))
+
 ## [2.6.0](https://github.com/ddadaal/react-typed-i18n/compare/v2.5.0...v2.6.0) (2025-12-19)
 
 

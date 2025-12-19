@@ -1,6 +1,6 @@
 {
   "name": "react-typed-i18n",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "type": "module",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
