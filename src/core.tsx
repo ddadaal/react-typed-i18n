@@ -5,7 +5,7 @@ import { invalidLanguageIdError, noProviderError } from "./errors";
 import {
   Definitions as Def,
   Lang, PartialLang, RestLang, LoadedDefinitions,
-  LanguageDictionary, LazyDefinitions, Language, DeepPartial,
+  LanguageDictionary, LazyDefinitions, Language, DeepPartial, 
 } from "./types";
 import { deepMerge, getDefinition, replacePlaceholders } from "./utils";
 
@@ -90,6 +90,11 @@ export interface I18n<D extends Def> {
    * Hook to get an i18n instance.
    */
   useI18n: () => ProviderValue<D>;
+
+  /**
+   * Load a language
+   */
+  loadLanguageDefinitions: (languageId: string) => Promise<D>;
 }
 
 
@@ -214,5 +219,29 @@ export function createI18nHooks<D extends Def>(
     },
     useI18n: useI18nContext,
     prefix: p,
+
+    loadLanguageDefinitions: async (languageId: string) => {
+      const defs = dict[languageId];
+      if (defs) {
+        return await loadDefinitions(defs);
+      }
+
+      if (partialLanguageOptions?.languages[languageId]) {
+        const partialDefs = partialLanguageOptions.languages[languageId];
+        
+        if (!fallbackLanguageDefinition) {
+          throw invalidLanguageIdError(languageId);
+        }
+        
+        const loadedFallbackDefs = await loadDefinitions(fallbackLanguageDefinition);
+
+        const loadedPartialDefs = await loadDefinitions(partialDefs);
+        
+        const mergedDefs = deepMerge(loadedFallbackDefs, loadedPartialDefs);
+        return mergedDefs;
+      }
+
+      throw invalidLanguageIdError(languageId);
+    },
   };
 }

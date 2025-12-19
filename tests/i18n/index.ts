@@ -18,7 +18,10 @@ export const languageInfo = {
   partial: { name: "Partial" },
 };
 
-export const { Localized, Provider, id, prefix, useI18n } = createI18n(languages, {
+export const {
+  Localized, Provider, id, prefix, 
+  useI18n, loadLanguageDefinitions, 
+} = createI18n(languages, {
   fallbackLanguageId: "en",
   languages: { partial },
 });

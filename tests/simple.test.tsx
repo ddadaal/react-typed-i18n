@@ -1,12 +1,13 @@
 import React from "react";
 import { act, fireEvent, waitFor } from "@testing-library/react";
-import { Localized } from "./i18n";
+import { Localized, loadLanguageDefinitions } from "./i18n";
 import en from "./i18n/en";
 import { useI18n } from "./i18n";
 import cn from "./i18n/cn";
 import { renderWithProvider } from "./utils";
 import fr from "./i18n/fr";
 import { deepMerge } from "../src";
+import partial from "./i18n/partial";
 
 const App: React.FC = () => {
   const i18n = useI18n();
@@ -115,3 +116,20 @@ it("tests deepMerge", () => {
 
 });
 
+
+it("tests loadDefinitions", async () => {
+
+  expect.assertions(5);
+
+  expect(await loadLanguageDefinitions("en")).toEqual(en);
+
+  expect(await loadLanguageDefinitions("cn")).toEqual(cn);
+
+  expect(await loadLanguageDefinitions("fr")).toEqual(fr);
+
+  expect(await loadLanguageDefinitions("partial")).toEqual(deepMerge(en, partial));
+
+  await loadLanguageDefinitions("bad").catch(
+    (error) => expect(error).toBeInstanceOf(Error));
+
+});

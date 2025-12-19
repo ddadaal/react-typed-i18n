@@ -29,7 +29,6 @@ npm install --save react-typed-i18n
 - **Hot language reloading** without reloading page
 - Supports **partially defined languages**
 - No external dependency and **1.3 KiB** gzipped
-- **100%** line and branch test coverage
 
 This library is the successor of [`simstate-i18n`](https://github.com/ddadaal/simstate-i18n). Most concepts and functionalities remain unchanged, but this library
 
