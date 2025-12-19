@@ -1,6 +1,6 @@
 import React from "react";
 import { invalidIdError } from "./errors";
-import { Definitions } from "./types";
+import { DeepPartial, Definitions } from "./types";
 
 export function replacePlaceholders(
   definition: string,
@@ -99,4 +99,28 @@ export const getDefinition = (definitions: Definitions, id: string): string => {
     throw invalidIdError(id);
   }
   return content;
+};
+
+export const deepMerge = <D extends Definitions>(
+  target: D,
+  source: DeepPartial<D>,
+): D => {
+  if (typeof source !== "object" || source === null) {
+    return target;
+  }
+  if (typeof target !== "object" || target === null) {
+    return source as D;
+  }
+  const result = { ...target };
+  for (const key in source) {
+    if (source.hasOwnProperty(key)) {
+      const sourceValue = source[key];
+      if (typeof sourceValue === "object" && sourceValue !== null) {
+        (result as any)[key] = deepMerge((result as any)[key], sourceValue);
+      } else {
+        (result as any)[key] = sourceValue;
+      }
+    }
+  }
+  return result;
 };

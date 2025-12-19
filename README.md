@@ -27,6 +27,7 @@ npm install --save react-typed-i18n
 - **Interpolation** with `string` and `React.ReactNode`
 - **Async language loading** for code splitting
 - **Hot language reloading** without reloading page
+- Supports **partially defined languages**
 - No external dependency and **1.3 KiB** gzipped
 - **100%** line and branch test coverage
 
@@ -61,6 +62,7 @@ npm run dev
 ```tsx
 // ./src/i18n/en
 export default {
+  title: "Title",
   hello: {
     world: "Hello {} World {}",
   }
@@ -68,9 +70,18 @@ export default {
 
 // ./src/i18n/cn
 export default {
+  title: "标题",
   hello: {
     world: "你好 {} 世界 {}",
-  }
+  },
+}
+
+// ./src/i18n/partial
+// Title is not defined for this partial language
+export default {
+  hello: {
+    world: "你好 {} 世界 {}",
+  },
 }
 ```
 
@@ -84,13 +95,17 @@ import { createI18n, languageDictionary } from "react-typed-i18n";
 
 const cn = () => import("./cn").then((x) => x.default);
 const en = () => import("./en").then((x) => x.default);
+const partial = () => import("./partial").then((x) => x.default);
 
 export const languages = languageDictionary({
   cn,
   en,
 });
 
-export const { Localized, Provider, id, prefix, useI18n } = createI18n(languages);
+export const { Localized, Provider, id, prefix, useI18n } = createI18n(languages, {
+  fallbackLanguageId: "en",
+  languages: { parital },
+});
 ```
 
 3. Wrap the component tree with `Provider` component

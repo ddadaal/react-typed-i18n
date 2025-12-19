@@ -5,9 +5,9 @@ import { invalidLanguageIdError, noProviderError } from "./errors";
 import {
   Definitions as Def,
   Lang, PartialLang, RestLang, LoadedDefinitions,
-  LanguageDictionary, LazyDefinitions, Language,
+  LanguageDictionary, LazyDefinitions, Language, DeepPartial,
 } from "./types";
-import { getDefinition, replacePlaceholders } from "./utils";
+import { deepMerge, getDefinition, replacePlaceholders } from "./utils";
 
 export interface ProviderValue<D extends Def> {
   /**
@@ -145,7 +145,19 @@ export const loadDefinitions = async <D extends Def>
  */
 export function createI18nHooks<D extends Def>(
   dict: LanguageDictionary<D>,
+  partialLanguageOptions?: {
+    fallbackLanguageId: string,
+    languages: LanguageDictionary<DeepPartial<D>>;
+  },
 ): I18n<D> {
+
+  const fallbackLanguageDefinition = partialLanguageOptions
+    ? dict[partialLanguageOptions.fallbackLanguageId]
+    : undefined;
+
+  if (partialLanguageOptions && !fallbackLanguageDefinition) {
+    throw invalidLanguageIdError(partialLanguageOptions.fallbackLanguageId);
+  }
 
   return {
     id: i,
@@ -163,6 +175,18 @@ export function createI18nHooks<D extends Def>(
         const defs = dict[id];
         if (defs) {
           await setLanguage({ id, definitions: defs });
+        } else if (partialLanguageOptions?.languages[id]) {
+          const partialDefs = partialLanguageOptions.languages[id];
+
+          if (!fallbackLanguageDefinition) {
+            throw invalidLanguageIdError(id);
+          }
+
+          const loadedFallbackDefs = await loadDefinitions(fallbackLanguageDefinition);
+          const loadedPartialDefs = await loadDefinitions(partialDefs);
+
+          const mergedDefs = deepMerge(loadedFallbackDefs, loadedPartialDefs);
+          await setLanguage({ id, definitions: mergedDefs });
         } else {
           throw invalidLanguageIdError(id);
         }
