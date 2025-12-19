@@ -3,6 +3,7 @@ import cn from "./cn";
 
 const en = () => import("./en").then((x) => x.default);
 const fr = () => import("./fr").then((x) => x.default);
+const partial = () => import("./partial").then((x) => x.default);
 
 export const languages = languageDictionary({
   cn,
@@ -14,6 +15,10 @@ export const languageInfo = {
   cn: { name: "简体中文" },
   en: { name: "English" },
   fr: { name: "Français" },
+  partial: { name: "Partial" },
 };
 
-export const { Localized, Provider, id, prefix, useI18n } = createI18n(languages);
+export const { Localized, Provider, id, prefix, useI18n } = createI18n(languages, {
+  fallbackLanguageId: "en",
+  languages: { partial },
+});
