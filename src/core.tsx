@@ -163,6 +163,30 @@ export function createI18nHooks<D extends Def>(
   if (partialLanguageOptions && !fallbackLanguageDefinition) {
     throw invalidLanguageIdError(partialLanguageOptions.fallbackLanguageId);
   }
+  
+  const loadLanguageDefinitions = async (languageId: string) => {
+    const defs = dict[languageId];
+    if (defs) {
+      return await loadDefinitions(defs);
+    }
+
+    if (partialLanguageOptions?.languages[languageId]) {
+      const partialDefs = partialLanguageOptions.languages[languageId];
+        
+      if (!fallbackLanguageDefinition) {
+        throw invalidLanguageIdError(languageId);
+      }
+        
+      const loadedFallbackDefs = await loadDefinitions(fallbackLanguageDefinition);
+
+      const loadedPartialDefs = await loadDefinitions(partialDefs);
+        
+      const mergedDefs = deepMerge(loadedFallbackDefs, loadedPartialDefs);
+      return mergedDefs;
+    }
+
+    throw invalidLanguageIdError(languageId);
+  };
 
   return {
     id: i,
@@ -177,24 +201,8 @@ export function createI18nHooks<D extends Def>(
       }, [dict]);
 
       const setLanguageById = useCallback(async (id: string) => {
-        const defs = dict[id];
-        if (defs) {
-          await setLanguage({ id, definitions: defs });
-        } else if (partialLanguageOptions?.languages[id]) {
-          const partialDefs = partialLanguageOptions.languages[id];
-
-          if (!fallbackLanguageDefinition) {
-            throw invalidLanguageIdError(id);
-          }
-
-          const loadedFallbackDefs = await loadDefinitions(fallbackLanguageDefinition);
-          const loadedPartialDefs = await loadDefinitions(partialDefs);
-
-          const mergedDefs = deepMerge(loadedFallbackDefs, loadedPartialDefs);
-          await setLanguage({ id, definitions: mergedDefs });
-        } else {
-          throw invalidLanguageIdError(id);
-        }
+        const definitions = await loadLanguageDefinitions(id);
+        await setLanguage({ id, definitions });
       }, [dict]);
 
       const translate = useCallback((id: string, args: React.ReactNode[]) => {
@@ -219,29 +227,7 @@ export function createI18nHooks<D extends Def>(
     },
     useI18n: useI18nContext,
     prefix: p,
+    loadLanguageDefinitions,
 
-    loadLanguageDefinitions: async (languageId: string) => {
-      const defs = dict[languageId];
-      if (defs) {
-        return await loadDefinitions(defs);
-      }
-
-      if (partialLanguageOptions?.languages[languageId]) {
-        const partialDefs = partialLanguageOptions.languages[languageId];
-        
-        if (!fallbackLanguageDefinition) {
-          throw invalidLanguageIdError(languageId);
-        }
-        
-        const loadedFallbackDefs = await loadDefinitions(fallbackLanguageDefinition);
-
-        const loadedPartialDefs = await loadDefinitions(partialDefs);
-        
-        const mergedDefs = deepMerge(loadedFallbackDefs, loadedPartialDefs);
-        return mergedDefs;
-      }
-
-      throw invalidLanguageIdError(languageId);
-    },
   };
 }
